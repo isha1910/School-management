@@ -8,7 +8,7 @@ const { authenticateJWT } = require("../middleware/auth.middleware");
 // ─── REGISTER ───
 router.post("/register", async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password } = req.body;
 
     // Validation
     if (!name || !email || !password) {
@@ -43,7 +43,8 @@ router.post("/register", async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      role: role === "admin" ? "admin" : "user", // Only allow admin/user
+      // Public registration creates students only.
+      role: "student",
     });
 
     res.status(201).json({
@@ -94,6 +95,12 @@ router.post("/login", async (req, res) => {
         success: false,
         message: "Invalid email or password.",
       });
+    }
+
+    // Backward compatibility: migrate legacy 'user' role to 'student'
+    if (user.role === "user") {
+      user.role = "student";
+      await user.save();
     }
 
     // Generate JWT

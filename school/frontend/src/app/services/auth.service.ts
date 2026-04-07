@@ -12,7 +12,8 @@ export interface LoginResponse {
     id: string;
     name: string;
     email: string;
-    role: 'admin' | 'user';
+    // 'user' is legacy; treat as 'student' for backward compatibility.
+    role: 'admin' | 'teacher' | 'student' | 'user';
   };
 }
 
@@ -20,7 +21,7 @@ export interface User {
   _id: string;
   name: string;
   email: string;
-  role: 'admin' | 'user';
+  role: 'admin' | 'teacher' | 'student' | 'user';
   createdAt: string;
 }
 
@@ -47,7 +48,7 @@ export class AuthService {
     );
   }
 
-  register(data: { name: string; email: string; password: string; role?: string }): Observable<any> {
+  register(data: { name: string; email: string; password: string }): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, data);
   }
 
@@ -70,7 +71,9 @@ export class AuthService {
 
   getRole(): string | null {
     const user = this.getUser();
-    return user ? user.role : null;
+    if (!user) return null;
+    // Normalize legacy role
+    return user.role === 'user' ? 'student' : user.role;
   }
 
   getUser(): User | null {
@@ -86,14 +89,21 @@ export class AuthService {
     return this.getRole() === 'admin';
   }
 
+  isTeacher(): boolean {
+    return this.getRole() === 'teacher';
+  }
+
+  isStudent(): boolean {
+    return this.getRole() === 'student';
+  }
+
   // ─── REDIRECT ───
 
   redirectToDashboard(): void {
-    if (this.isAdmin()) {
-      this.router.navigate(['/admin/dashboard']);
-    } else {
-      this.router.navigate(['/user/dashboard']);
-    }
+    const role = this.getRole();
+    if (role === 'admin') return void this.router.navigate(['/admin/dashboard']);
+    if (role === 'teacher') return void this.router.navigate(['/teacher/dashboard']);
+    return void this.router.navigate(['/student/dashboard']);
   }
 
   // ─── PRIVATE ───

@@ -21,8 +21,20 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["admin", "user"],
-      default: "user",
+      enum: ["admin", "teacher", "student"],
+      default: "student",
+    },
+    // Student-specific (optional)
+    classId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Class",
+      default: null,
+    },
+    // Teacher-specific (optional)
+    teacherProfileId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Teacher",
+      default: null,
     },
   },
   {

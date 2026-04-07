@@ -24,16 +24,27 @@ const authenticateJWT = (req, res, next) => {
   }
 };
 
-// Restrict to admin only
-const adminOnly = (req, res, next) => {
-  if (req.user && req.user.role === "admin") {
-    next();
-  } else {
+const allowRoles = (...roles) => {
+  return (req, res, next) => {
+    if (!req.user || !req.user.role) {
+      return res.status(401).json({
+        success: false,
+        message: "Access denied. Missing user context.",
+      });
+    }
+
+    if (roles.includes(req.user.role)) {
+      return next();
+    }
+
     return res.status(403).json({
       success: false,
-      message: "Access denied. Admin only.",
+      message: "Access denied. Insufficient permissions.",
     });
-  }
+  };
 };
 
-module.exports = { authenticateJWT, adminOnly };
+// Backwards-compatible helper
+const adminOnly = allowRoles("admin");
+
+module.exports = { authenticateJWT, allowRoles, adminOnly };

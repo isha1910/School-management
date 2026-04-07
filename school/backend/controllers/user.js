@@ -126,11 +126,12 @@ exports.getDashboardStats = async (req, res) => {
   try {
     const Teacher = require("../models/Teacher.Model");
 
-    const [totalUsers, totalTeachers, adminCount, userCount] = await Promise.all([
+    const [totalUsers, totalTeachers, adminCount, teacherCount, studentCount] = await Promise.all([
       User.countDocuments(),
       Teacher.countDocuments(),
       User.countDocuments({ role: "admin" }),
-      User.countDocuments({ role: "user" }),
+      User.countDocuments({ role: "teacher" }),
+      User.countDocuments({ role: "student" }),
     ]);
 
     res.status(200).json({
@@ -139,7 +140,8 @@ exports.getDashboardStats = async (req, res) => {
         totalUsers,
         totalTeachers,
         adminCount,
-        userCount,
+        teacherCount,
+        studentCount,
       },
     });
   } catch (error) {

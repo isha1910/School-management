@@ -15,7 +15,6 @@ export class RegisterComponent {
   name = '';
   email = '';
   password = '';
-  role = 'user';
   loading = false;
   error = '';
   success = '';
@@ -41,7 +40,6 @@ export class RegisterComponent {
       name: this.name,
       email: this.email,
       password: this.password,
-      role: this.role,
     }).subscribe({
       next: (res: any) => {
         this.loading = false;

@@ -11,30 +11,39 @@ export const authGuard: CanActivateFn = () => {
     return true;
   }
 
-  router.navigate(['/login']);
-  return false;
+  return router.parseUrl('/login');
 };
 
-// Guard: must be admin
-export const adminGuard: CanActivateFn = () => {
-  const auth = inject(AuthService);
-  const router = inject(Router);
+const roleGuard =
+  (...roles: Array<'admin' | 'teacher' | 'student'>): CanActivateFn =>
+  () => {
+    const auth = inject(AuthService);
+    const router = inject(Router);
 
-  if (auth.isLoggedIn && auth.isAdmin()) {
-    return true;
-  }
+    if (!auth.isLoggedIn) {
+      return router.parseUrl('/login');
+    }
 
-  router.navigate(['/login']);
-  return false;
-};
+    const role = auth.getRole();
+
+    if (role && roles.includes(role as any)) {
+      return true;
+    }
+
+    return router.parseUrl('/user');
+  };
+
+export const adminGuard = roleGuard('admin');
+export const teacherGuard = roleGuard('teacher');
+export const studentGuard = roleGuard('student');
 
 // Guard: redirect if already logged in
 export const guestGuard: CanActivateFn = () => {
   const auth = inject(AuthService);
+  const router = inject(Router);
 
   if (auth.isLoggedIn) {
-    auth.redirectToDashboard();
-    return false;
+    return router.parseUrl('/user');
   }
 
   return true;

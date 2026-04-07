@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard, adminGuard, guestGuard } from './guards/auth.guard';
+import { adminGuard, guestGuard, studentGuard, teacherGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   // ─── PUBLIC PAGES (with header/footer layout) ───
@@ -60,10 +60,10 @@ export const routes: Routes = [
     ],
   },
 
-  // ─── USER ROUTES ───
+  // ─── TEACHER ROUTES ───
   {
-    path: 'user',
-    canActivate: [authGuard],
+    path: 'teacher',
+    canActivate: [teacherGuard],
     loadComponent: () => import('./layouts/user-layout/user-layout.component').then(m => m.UserLayoutComponent),
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -76,6 +76,31 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/user/teachers/user-teachers.component').then(m => m.UserTeachersComponent),
       },
     ],
+  },
+
+  // ─── STUDENT ROUTES ───
+  {
+    path: 'student',
+    canActivate: [studentGuard],
+    loadComponent: () => import('./layouts/user-layout/user-layout.component').then(m => m.UserLayoutComponent),
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      {
+        path: 'dashboard',
+        loadComponent: () => import('./pages/user/dashboard/user-dashboard.component').then(m => m.UserDashboardComponent),
+      },
+      {
+        path: 'teachers',
+        loadComponent: () => import('./pages/user/teachers/user-teachers.component').then(m => m.UserTeachersComponent),
+      },
+    ],
+  },
+
+  // ─── LEGACY USER ROUTES (redirect based on role) ───
+  // NOTE: redirectTo cannot be combined with guards. Use a component to redirect.
+  {
+    path: 'user',
+    loadComponent: () => import('./pages/role-redirect/role-redirect.component').then(m => m.RoleRedirectComponent),
   },
 
   // ─── FALLBACK ───

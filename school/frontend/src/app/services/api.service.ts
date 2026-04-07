@@ -25,7 +25,8 @@ export interface StatsData {
   totalUsers: number;
   totalTeachers: number;
   adminCount: number;
-  userCount: number;
+  teacherCount: number;
+  studentCount: number;
 }
 
 @Injectable({ providedIn: 'root' })
