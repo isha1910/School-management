@@ -1,0 +1,72 @@
+<div class="teachers-page">
+
+  <!-- HERO -->
+  <section class="teachers-hero">
+    <div class="container">
+      <span class="badge">Our Faculty</span>
+      <h1>Meet Our <span class="gradient-text">Expert Teachers</span></h1>
+      <p>Our dedicated educators bring years of experience and passion into the classroom, inspiring students to reach their full potential.</p>
+    </div>
+  </section>
+
+  <!-- TEACHERS LIST -->
+  <section class="teachers-content">
+    <div class="container">
+
+      <!-- SEARCH -->
+      <div class="search-bar">
+        <span class="material-icons-round search-icon">search</span>
+        <input
+          type="text"
+          [(ngModel)]="searchTerm"
+          placeholder="Search by name or subject..."
+        />
+      </div>
+
+      @if (loading) {
+        <div class="cards-grid">
+          @for (i of [1,2,3,4,5,6]; track i) {
+            <div class="teacher-card">
+              <div class="skeleton" style="width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 16px;"></div>
+              <div class="skeleton" style="width: 120px; height: 18px; margin: 0 auto 8px;"></div>
+              <div class="skeleton" style="width: 80px; height: 14px; margin: 0 auto;"></div>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="cards-grid">
+          @for (teacher of filteredTeachers; track teacher._id) {
+            <div class="teacher-card">
+              <div class="card-avatar">{{ teacher.name.charAt(0).toUpperCase() }}</div>
+              <h3>{{ teacher.name }}</h3>
+              <span class="card-subject">{{ teacher.subject }}</span>
+              <div class="card-details">
+                <div class="detail">
+                  <span class="material-icons-round">work_history</span>
+                  <span>{{ teacher.experience }} years exp.</span>
+                </div>
+                <div class="detail">
+                  <span class="material-icons-round">mail</span>
+                  <span>{{ teacher.email }}</span>
+                </div>
+                <div class="detail">
+                  <span class="material-icons-round">phone</span>
+                  <span>{{ teacher.phone }}</span>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+
+        @if (filteredTeachers.length === 0 && !loading) {
+          <div class="empty-state">
+            <span class="material-icons-round">search_off</span>
+            <p>No teachers found</p>
+          </div>
+        }
+      }
+
+    </div>
+  </section>
+
+</div>

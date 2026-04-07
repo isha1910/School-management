@@ -1,0 +1,88 @@
+<!-- ═══ HEADER / NAVBAR ═══ -->
+<header class="navbar">
+  <div class="container nav-container">
+
+    <!-- LOGO -->
+    <a routerLink="/" class="logo" (click)="closeMobileMenu()">
+      <span class="material-icons-round logo-icon">school</span>
+      <span class="logo-text">D.P. Derasari School</span>
+    </a>
+
+    <!-- NAV LINKS (Desktop) -->
+    <nav class="nav-links" [class.open]="mobileMenuOpen">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" (click)="closeMobileMenu()">Home</a>
+      <a routerLink="/teachers" routerLinkActive="active" (click)="closeMobileMenu()">Teachers</a>
+      <a routerLink="/about" routerLinkActive="active" (click)="closeMobileMenu()">About</a>
+      <a routerLink="/contact" routerLinkActive="active" (click)="closeMobileMenu()">Contact</a>
+
+      <div class="nav-actions">
+        @if (auth.isLoggedIn) {
+          <a class="btn btn-outline" (click)="auth.redirectToDashboard(); closeMobileMenu()">Dashboard</a>
+          <a class="btn btn-danger-outline" (click)="auth.logout(); closeMobileMenu()">Logout</a>
+        } @else {
+          <a routerLink="/login" class="btn btn-outline" (click)="closeMobileMenu()">Login</a>
+          <a routerLink="/register" class="btn btn-primary" (click)="closeMobileMenu()">Register</a>
+        }
+      </div>
+    </nav>
+
+    <!-- MOBILE TOGGLE -->
+    <button class="mobile-toggle" (click)="toggleMobileMenu()">
+      <span class="material-icons-round">{{ mobileMenuOpen ? 'close' : 'menu' }}</span>
+    </button>
+
+  </div>
+</header>
+
+<!-- ═══ MAIN CONTENT ═══ -->
+<main class="main-content">
+  <router-outlet />
+</main>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="container">
+
+    <div class="footer-grid">
+      <!-- BRAND -->
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <span class="material-icons-round">school</span>
+          <span>D.P. Derasari School</span>
+        </div>
+        <p>Nurturing minds, building futures. Providing quality education with modern approaches and experienced faculty.</p>
+      </div>
+
+      <!-- QUICK LINKS -->
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <a routerLink="/">Home</a>
+        <a routerLink="/teachers">Teachers</a>
+        <a routerLink="/about">About Us</a>
+        <a routerLink="/contact">Contact</a>
+      </div>
+
+      <!-- CONTACT INFO -->
+      <div class="footer-section">
+        <h4>Contact Info</h4>
+        <div class="footer-contact">
+          <span class="material-icons-round">location_on</span>
+          <span>123 School Street, City</span>
+        </div>
+        <div class="footer-contact">
+          <span class="material-icons-round">phone</span>
+          <span>+91 98765 43210</span>
+        </div>
+        <div class="footer-contact">
+          <span class="material-icons-round">email</span>
+          <span>info&#64;dpderasari.edu</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2026 D.P. Derasari School. All rights reserved.</p>
+    </div>
+
+  </div>
+</footer>

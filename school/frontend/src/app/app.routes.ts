@@ -2,6 +2,30 @@ import { Routes } from '@angular/router';
 import { authGuard, adminGuard, guestGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
+  // ─── PUBLIC PAGES (with header/footer layout) ───
+  {
+    path: '',
+    loadComponent: () => import('./layouts/public-layout/public-layout.component').then(m => m.PublicLayoutComponent),
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent),
+      },
+      {
+        path: 'teachers',
+        loadComponent: () => import('./pages/public-teachers/public-teachers.component').then(m => m.PublicTeachersComponent),
+      },
+      {
+        path: 'about',
+        loadComponent: () => import('./pages/about/about.component').then(m => m.AboutComponent),
+      },
+      {
+        path: 'contact',
+        loadComponent: () => import('./pages/contact/contact.component').then(m => m.ContactComponent),
+      },
+    ],
+  },
+
   // ─── AUTH (guest only) ───
   {
     path: 'login',
@@ -54,7 +78,6 @@ export const routes: Routes = [
     ],
   },
 
-  // ─── DEFAULT ───
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: '**', redirectTo: '/login' },
+  // ─── FALLBACK ───
+  { path: '**', redirectTo: '', pathMatch: 'full' },
 ];

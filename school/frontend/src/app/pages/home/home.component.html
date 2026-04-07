@@ -1,0 +1,142 @@
+<!-- ═══ HERO SECTION ═══ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="container hero-content">
+    <div class="hero-text animate-fade-in">
+      <span class="hero-badge">🎓 Welcome to D.P. Derasari School</span>
+      <h1>Empowering <span class="gradient-text">Young Minds</span> For a Brighter Future</h1>
+      <p>Building character, fostering knowledge, and inspiring excellence since 1995. Where every student's potential is nurtured and celebrated.</p>
+      <div class="hero-actions">
+        @if (auth.isLoggedIn) {
+          <a class="btn-hero btn-hero-primary" (click)="auth.redirectToDashboard()">
+            <span class="material-icons-round">dashboard</span>
+            Go to Dashboard
+          </a>
+        } @else {
+          <a routerLink="/register" class="btn-hero btn-hero-primary">
+            <span class="material-icons-round">person_add</span>
+            Get Started
+          </a>
+          <a routerLink="/login" class="btn-hero btn-hero-outline">
+            <span class="material-icons-round">login</span>
+            Sign In
+          </a>
+        }
+      </div>
+    </div>
+
+    <div class="hero-visual animate-slide-right">
+      <div class="hero-card">
+        <div class="hero-card-icon">
+          <span class="material-icons-round">school</span>
+        </div>
+        <h3>Excellence in Education</h3>
+        <p>Join thousands of students excelling with our expert faculty and modern curriculum.</p>
+        <div class="hero-card-stats">
+          @for (stat of stats; track stat.label) {
+            <div class="mini-stat">
+              <strong>{{ stat.value }}</strong>
+              <span>{{ stat.label }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ STATS SECTION ═══ -->
+<section class="stats-section">
+  <div class="container">
+    <div class="stats-grid">
+      @for (stat of stats; track stat.label) {
+        <div class="stat-item">
+          <div class="stat-icon" [attr.data-color]="stat.color">
+            <span class="material-icons-round">{{ stat.icon }}</span>
+          </div>
+          <div class="stat-value">{{ stat.value }}</div>
+          <div class="stat-label">{{ stat.label }}</div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FEATURES SECTION ═══ -->
+<section class="features-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-badge">Why Choose Us</span>
+      <h2>Everything You Need for <span class="gradient-text">Academic Excellence</span></h2>
+      <p>We provide comprehensive education with modern facilities and experienced faculty.</p>
+    </div>
+
+    <div class="features-grid">
+      @for (feature of features; track feature.title) {
+        <div class="feature-card">
+          <div class="feature-icon">
+            <span class="material-icons-round">{{ feature.icon }}</span>
+          </div>
+          <h3>{{ feature.title }}</h3>
+          <p>{{ feature.desc }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TEACHERS PREVIEW ═══ -->
+@if (teachers.length > 0) {
+  <section class="teachers-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Our Faculty</span>
+        <h2>Meet Our <span class="gradient-text">Expert Teachers</span></h2>
+        <p>Dedicated professionals committed to guiding students toward success.</p>
+      </div>
+
+      <div class="teachers-grid">
+        @for (teacher of teachers; track teacher._id) {
+          <div class="teacher-card">
+            <div class="teacher-avatar">{{ teacher.name.charAt(0).toUpperCase() }}</div>
+            <h3>{{ teacher.name }}</h3>
+            <span class="teacher-subject">{{ teacher.subject }}</span>
+            <div class="teacher-meta">
+              <span class="material-icons-round">work_history</span>
+              {{ teacher.experience }} years experience
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="section-cta">
+        <a routerLink="/teachers" class="btn-hero btn-hero-outline">
+          View All Teachers
+          <span class="material-icons-round">arrow_forward</span>
+        </a>
+      </div>
+    </div>
+  </section>
+}
+
+<!-- ═══ CTA SECTION ═══ -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-card">
+      <div class="cta-content">
+        <h2>Ready to Start Your Journey?</h2>
+        <p>Join our community of learners and begin your path to a brighter future today.</p>
+        <div class="cta-actions">
+          <a routerLink="/register" class="btn-hero btn-hero-white">
+            <span class="material-icons-round">person_add</span>
+            Create Account
+          </a>
+          <a routerLink="/contact" class="btn-hero btn-hero-ghost">
+            Contact Us
+            <span class="material-icons-round">arrow_forward</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
