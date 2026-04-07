@@ -1,0 +1,122 @@
+<div class="auth-page">
+  <div class="auth-container animate-scale-in">
+
+    <!-- Left: Branding -->
+    <div class="auth-branding">
+      <div class="branding-content">
+        <div class="brand-icon">
+          <span class="material-icons-round">school</span>
+        </div>
+        <h1>Join the Platform</h1>
+        <p>Create your account and start managing your school ecosystem efficiently. Access dashboards, manage resources, and track performance.</p>
+        <div class="brand-features">
+          <div class="feature">
+            <span class="material-icons-round">person_add</span>
+            <span>Quick Registration</span>
+          </div>
+          <div class="feature">
+            <span class="material-icons-round">admin_panel_settings</span>
+            <span>Admin & User Roles</span>
+          </div>
+          <div class="feature">
+            <span class="material-icons-round">lock</span>
+            <span>Encrypted & Secure</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Form -->
+    <div class="auth-form-section">
+      <div class="auth-form-wrapper">
+        <h2>Create Account</h2>
+        <p class="subtitle">Fill in the details to get started</p>
+
+        @if (error) {
+          <div class="alert alert-error animate-fade-in">
+            <span class="material-icons-round">error_outline</span>
+            <span>{{ error }}</span>
+          </div>
+        }
+
+        @if (success) {
+          <div class="alert alert-success animate-fade-in">
+            <span class="material-icons-round">check_circle</span>
+            <span>{{ success }}</span>
+          </div>
+        }
+
+        <form (ngSubmit)="register()" class="auth-form">
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <div class="input-wrapper">
+              <span class="material-icons-round input-icon">person</span>
+              <input
+                id="name"
+                type="text"
+                [(ngModel)]="name"
+                name="name"
+                placeholder="Enter your full name"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="reg-email">Email Address</label>
+            <div class="input-wrapper">
+              <span class="material-icons-round input-icon">mail</span>
+              <input
+                id="reg-email"
+                type="email"
+                [(ngModel)]="email"
+                name="email"
+                placeholder="Enter your email"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="reg-password">Password</label>
+            <div class="input-wrapper">
+              <span class="material-icons-round input-icon">lock</span>
+              <input
+                id="reg-password"
+                type="password"
+                [(ngModel)]="password"
+                name="password"
+                placeholder="Minimum 6 characters"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="role">Account Type</label>
+            <div class="input-wrapper">
+              <span class="material-icons-round input-icon">badge</span>
+              <select id="role" [(ngModel)]="role" name="role">
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-full" [disabled]="loading">
+            @if (loading) {
+              <div class="spinner spinner-sm"></div>
+              <span>Creating account...</span>
+            } @else {
+              <span>Create Account</span>
+              <span class="material-icons-round">arrow_forward</span>
+            }
+          </button>
+        </form>
+
+        <p class="auth-footer">
+          Already have an account?
+          <a routerLink="/login" class="link">Sign in</a>
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -4,23 +4,30 @@ const teacherSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: [true, "Name is required"],
+      trim: true,
     },
     subject: {
       type: String,
-      required: true,
+      required: [true, "Subject is required"],
+      trim: true,
     },
-    designation: {
-      type: String,
-      required: true,
+    experience: {
+      type: Number,
+      required: [true, "Experience is required"],
+      min: 0,
     },
-    bio: {
+    email: {
       type: String,
-      required: true,
+      required: [true, "Email is required"],
+      unique: true,
+      lowercase: true,
+      trim: true,
     },
-    image: {   // ✅ IMPORTANT (same use everywhere)
+    phone: {
       type: String,
-      required: true,
+      required: [true, "Phone is required"],
+      trim: true,
     },
   },
   {

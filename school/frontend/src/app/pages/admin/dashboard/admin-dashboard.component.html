@@ -1,0 +1,95 @@
+<div class="dashboard-page animate-fade-in">
+
+  <div class="page-header">
+    <h1>Dashboard</h1>
+    <p>Overview of your school management system</p>
+  </div>
+
+  @if (loading) {
+    <div class="stats-grid">
+      @for (i of [1,2,3,4]; track i) {
+        <div class="stat-card">
+          <div class="skeleton" style="width: 48px; height: 48px; border-radius: 12px;"></div>
+          <div>
+            <div class="skeleton" style="width: 80px; height: 14px; margin-bottom: 8px;"></div>
+            <div class="skeleton" style="width: 40px; height: 28px;"></div>
+          </div>
+        </div>
+      }
+    </div>
+  } @else if (error) {
+    <div class="error-state">
+      <span class="material-icons-round">error_outline</span>
+      <p>{{ error }}</p>
+      <button class="btn btn-retry" (click)="loadStats()">
+        <span class="material-icons-round">refresh</span> Retry
+      </button>
+    </div>
+  } @else {
+    <!-- STAT CARDS -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon purple">
+          <span class="material-icons-round">people</span>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label">Total Users</span>
+          <span class="stat-value">{{ stats?.totalUsers }}</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon blue">
+          <span class="material-icons-round">school</span>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label">Total Teachers</span>
+          <span class="stat-value">{{ stats?.totalTeachers }}</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon green">
+          <span class="material-icons-round">shield</span>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label">Admins</span>
+          <span class="stat-value">{{ stats?.adminCount }}</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon orange">
+          <span class="material-icons-round">person</span>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label">Regular Users</span>
+          <span class="stat-value">{{ stats?.userCount }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="section">
+      <h2 class="section-title">Quick Actions</h2>
+      <div class="actions-grid">
+        <a routerLink="/admin/teachers" class="action-card">
+          <div class="action-icon purple">
+            <span class="material-icons-round">person_add</span>
+          </div>
+          <h3>Manage Teachers</h3>
+          <p>Add, edit, or remove teachers</p>
+        </a>
+
+        <a routerLink="/admin/users" class="action-card">
+          <div class="action-icon blue">
+            <span class="material-icons-round">manage_accounts</span>
+          </div>
+          <h3>Manage Users</h3>
+          <p>View and manage user accounts</p>
+        </a>
+      </div>
+    </div>
+  }
+
+</div>

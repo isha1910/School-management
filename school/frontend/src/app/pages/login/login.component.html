@@ -1,0 +1,94 @@
+<div class="auth-page">
+  <div class="auth-container animate-scale-in">
+
+    <!-- Left: Branding -->
+    <div class="auth-branding">
+      <div class="branding-content">
+        <div class="brand-icon">
+          <span class="material-icons-round">school</span>
+        </div>
+        <h1>School Management</h1>
+        <p>Streamline your institution with our powerful management platform. Track teachers, manage users, and gain insights — all in one place.</p>
+        <div class="brand-features">
+          <div class="feature">
+            <span class="material-icons-round">verified</span>
+            <span>Role-based Access Control</span>
+          </div>
+          <div class="feature">
+            <span class="material-icons-round">dashboard</span>
+            <span>Real-time Analytics</span>
+          </div>
+          <div class="feature">
+            <span class="material-icons-round">security</span>
+            <span>Secure Authentication</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Form -->
+    <div class="auth-form-section">
+      <div class="auth-form-wrapper">
+        <h2>Welcome back</h2>
+        <p class="subtitle">Sign in to your account to continue</p>
+
+        <!-- Error -->
+        @if (error) {
+          <div class="alert alert-error animate-fade-in">
+            <span class="material-icons-round">error_outline</span>
+            <span>{{ error }}</span>
+          </div>
+        }
+
+        <!-- Form -->
+        <form (ngSubmit)="login()" class="auth-form">
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <div class="input-wrapper">
+              <span class="material-icons-round input-icon">mail</span>
+              <input
+                id="email"
+                type="email"
+                [(ngModel)]="email"
+                name="email"
+                placeholder="Enter your email"
+                autocomplete="email"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <div class="input-wrapper">
+              <span class="material-icons-round input-icon">lock</span>
+              <input
+                id="password"
+                type="password"
+                [(ngModel)]="password"
+                name="password"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+              />
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-full" [disabled]="loading">
+            @if (loading) {
+              <div class="spinner spinner-sm"></div>
+              <span>Signing in...</span>
+            } @else {
+              <span>Sign In</span>
+              <span class="material-icons-round">arrow_forward</span>
+            }
+          </button>
+        </form>
+
+        <p class="auth-footer">
+          Don't have an account?
+          <a routerLink="/register" class="link">Create one</a>
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>

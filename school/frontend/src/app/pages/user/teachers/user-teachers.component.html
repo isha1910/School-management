@@ -1,0 +1,63 @@
+<div class="page animate-fade-in">
+
+  <div class="page-header">
+    <h1>Our Teachers</h1>
+    <p>Browse all registered teachers and their details</p>
+  </div>
+
+  <div class="search-bar">
+    <span class="material-icons-round search-icon">search</span>
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      placeholder="Search by name or subject..."
+    />
+  </div>
+
+  @if (loading) {
+    <div class="cards-grid">
+      @for (i of [1,2,3,4,5,6]; track i) {
+        <div class="teacher-card">
+          <div class="skeleton" style="width: 60px; height: 60px; border-radius: 50%;"></div>
+          <div class="skeleton" style="width: 120px; height: 18px; margin-top: 12px;"></div>
+          <div class="skeleton" style="width: 80px; height: 14px; margin-top: 8px;"></div>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="cards-grid">
+      @for (teacher of filteredTeachers; track teacher._id) {
+        <div class="teacher-card">
+          <div class="card-avatar">
+            {{ teacher.name.charAt(0).toUpperCase() }}
+          </div>
+          <h3 class="card-name">{{ teacher.name }}</h3>
+          <span class="card-subject">{{ teacher.subject }}</span>
+
+          <div class="card-details">
+            <div class="detail">
+              <span class="material-icons-round">work_history</span>
+              <span>{{ teacher.experience }} years exp.</span>
+            </div>
+            <div class="detail">
+              <span class="material-icons-round">mail</span>
+              <span>{{ teacher.email }}</span>
+            </div>
+            <div class="detail">
+              <span class="material-icons-round">phone</span>
+              <span>{{ teacher.phone }}</span>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    @if (filteredTeachers.length === 0) {
+      <div class="empty-state">
+        <span class="material-icons-round">search_off</span>
+        <p>No teachers found</p>
+      </div>
+    }
+  }
+
+</div>

@@ -1,0 +1,50 @@
+<div class="dashboard-page animate-fade-in">
+
+  <div class="welcome-card">
+    <div class="welcome-content">
+      <h1>Welcome back, {{ userName }}! 👋</h1>
+      <p>Here's your school overview. Explore teachers and their details.</p>
+    </div>
+    <div class="welcome-art">
+      <span class="material-icons-round">school</span>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="skeleton" style="width: 48px; height: 48px; border-radius: 12px;"></div>
+        <div>
+          <div class="skeleton" style="width: 80px; height: 14px; margin-bottom: 8px;"></div>
+          <div class="skeleton" style="width: 40px; height: 28px;"></div>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon teal">
+          <span class="material-icons-round">school</span>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label">Total Teachers</span>
+          <span class="stat-value">{{ teacherCount }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Quick Actions</h2>
+      <div class="actions-grid">
+        <a routerLink="/user/teachers" class="action-card">
+          <div class="action-icon teal">
+            <span class="material-icons-round">visibility</span>
+          </div>
+          <h3>View Teachers</h3>
+          <p>Browse all teachers and their details</p>
+        </a>
+      </div>
+    </div>
+  }
+
+</div>

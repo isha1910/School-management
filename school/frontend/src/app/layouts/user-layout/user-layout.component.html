@@ -1,0 +1,84 @@
+<div class="layout" [class.sidebar-collapsed]="sidebarCollapsed">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <span class="material-icons-round logo-icon">school</span>
+        @if (!sidebarCollapsed) {
+          <span class="logo-text">SchoolMS</span>
+        }
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      @for (item of menuItems; track item.route) {
+        <a
+          [routerLink]="item.route"
+          routerLinkActive="active"
+          class="nav-item"
+          [title]="item.label"
+        >
+          <span class="material-icons-round">{{ item.icon }}</span>
+          @if (!sidebarCollapsed) {
+            <span class="nav-label">{{ item.label }}</span>
+          }
+        </a>
+      }
+    </nav>
+
+    <div class="sidebar-footer">
+      <a (click)="logout()" class="nav-item logout-btn">
+        <span class="material-icons-round">logout</span>
+        @if (!sidebarCollapsed) {
+          <span class="nav-label">Logout</span>
+        }
+      </a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main-wrapper">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="toggle-btn" (click)="toggleSidebar()">
+          <span class="material-icons-round">{{ sidebarCollapsed ? 'menu' : 'menu_open' }}</span>
+        </button>
+        <h3 class="page-title">User Panel</h3>
+      </div>
+
+      <div class="topbar-right">
+        <div class="user-badge">
+          <span class="material-icons-round">person</span>
+          <span>User</span>
+        </div>
+
+        <div class="profile-section" (click)="toggleProfile()">
+          <div class="avatar">
+            {{ auth.getUser()?.name?.charAt(0)?.toUpperCase() }}
+          </div>
+          <span class="material-icons-round dropdown-arrow">expand_more</span>
+
+          @if (showProfileMenu) {
+            <div class="profile-dropdown animate-fade-in">
+              <div class="dropdown-header">
+                <strong>{{ auth.getUser()?.name }}</strong>
+                <span>{{ auth.getUser()?.email }}</span>
+              </div>
+              <div class="dropdown-divider"></div>
+              <a (click)="logout()" class="dropdown-item">
+                <span class="material-icons-round">logout</span>
+                <span>Sign Out</span>
+              </a>
+            </div>
+          }
+        </div>
+      </div>
+    </header>
+
+    <main class="content">
+      <router-outlet />
+    </main>
+  </div>
+
+</div>

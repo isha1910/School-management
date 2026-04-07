@@ -1,52 +1,57 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const cors = require("cors");
+const morgan = require("morgan");
 const connectDB = require("./config/db");
 
+// Load environment variables
 dotenv.config({ path: "./config/.env" });
 
+// Initialize Express
 const app = express();
-const morgan = require("morgan");
-const cors = require("cors");
 
-// ✅ DB CONNECTION
+// Connect to MongoDB
 connectDB();
 
-// ✅ MIDDLEWARE
+// ─── MIDDLEWARE ───
 app.use(morgan("dev"));
 app.use(cors());
 app.use(express.json());
 
-// ================= ROUTES =================
-
-// 🔹 EXISTING ROUTES
-app.use("/api/contact", require("./routes/contact"));
-app.use("/api/event", require("./routes/event"));
-app.use("/api/gallery", require("./routes/gallery"));
-app.use("/api/notice", require("./routes/notice"));
-app.use("/api/teacher", require("./routes/teacher"));
+// ─── API ROUTES ───
 app.use("/api/auth", require("./routes/auth"));
+app.use("/api/teacher", require("./routes/teacher"));
+app.use("/api/users", require("./routes/user"));
 
-// 🔹 STUDENT
-app.use("/api/student", require("./routes/student"));
-
-// 🔹 ATTENDANCE
-app.use("/api/attendance", require("./routes/attendance"));
-
-// 🔹 ASSIGNMENTS (NEW CLEAN ROUTE ✅)
-app.use("/api/assignments", require("./routes/upload"));
-
-
-// ✅ STATIC FOLDER (IMPORTANT)
-app.use("/uploads", express.static("uploads"));
-
-// ================= TEST ROUTE =================
+// ─── HEALTH CHECK ───
 app.get("/", (req, res) => {
-  res.send("🚀 Server Running...");
+  res.json({
+    success: true,
+    message: "School Management API is running.",
+    version: "1.0.0",
+  });
 });
 
-// ================= SERVER =================
+// ─── 404 HANDLER ───
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: `Route ${req.originalUrl} not found.`,
+  });
+});
+
+// ─── ERROR HANDLER ───
+app.use((err, req, res, next) => {
+  console.error("Server Error:", err.stack);
+  res.status(500).json({
+    success: false,
+    message: "Internal server error.",
+  });
+});
+
+// ─── START SERVER ───
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`🔥 Server is running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
 });

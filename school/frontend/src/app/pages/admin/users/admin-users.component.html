@@ -1,0 +1,156 @@
+<div class="page animate-fade-in">
+
+  <div class="page-header">
+    <div>
+      <h1>User Management</h1>
+      <p>Manage all registered user accounts</p>
+    </div>
+    <div class="user-count">
+      <span class="material-icons-round">people</span>
+      {{ users.length }} total
+    </div>
+  </div>
+
+  @if (successMsg) {
+    <div class="toast toast-success animate-fade-in">
+      <span class="material-icons-round">check_circle</span>
+      {{ successMsg }}
+    </div>
+  }
+
+  @if (error && !showModal) {
+    <div class="toast toast-error animate-fade-in">
+      <span class="material-icons-round">error_outline</span>
+      {{ error }}
+    </div>
+  }
+
+  <!-- SEARCH -->
+  <div class="search-bar">
+    <span class="material-icons-round search-icon">search</span>
+    <input
+      type="text"
+      [(ngModel)]="searchTerm"
+      placeholder="Search by name, email, or role..."
+    />
+  </div>
+
+  @if (loading) {
+    <div class="table-card">
+      @for (i of [1,2,3,4,5]; track i) {
+        <div class="skeleton-row">
+          <div class="skeleton" style="width: 120px; height: 16px;"></div>
+          <div class="skeleton" style="width: 160px; height: 16px;"></div>
+          <div class="skeleton" style="width: 60px; height: 16px;"></div>
+          <div class="skeleton" style="width: 100px; height: 16px;"></div>
+        </div>
+      }
+    </div>
+  } @else {
+    <div class="table-card">
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Joined</th>
+              <th class="text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (user of filteredUsers; track user._id) {
+              <tr>
+                <td>
+                  <div class="user-name">
+                    <div class="name-avatar" [class.admin-avatar]="user.role === 'admin'">
+                      {{ user.name.charAt(0).toUpperCase() }}
+                    </div>
+                    {{ user.name }}
+                  </div>
+                </td>
+                <td>{{ user.email }}</td>
+                <td>
+                  <span class="badge" [ngClass]="getRoleBadgeClass(user.role)">
+                    {{ user.role }}
+                  </span>
+                </td>
+                <td>{{ user.createdAt | date:'mediumDate' }}</td>
+                <td class="text-right">
+                  <div class="action-buttons">
+                    <button class="icon-btn edit" (click)="openEditModal(user)" title="Edit">
+                      <span class="material-icons-round">edit</span>
+                    </button>
+                    <button class="icon-btn delete" (click)="deleteUser(user._id, user.name)" title="Delete">
+                      <span class="material-icons-round">delete</span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+            @if (filteredUsers.length === 0) {
+              <tr>
+                <td colspan="5" class="empty-state">
+                  <span class="material-icons-round">person_off</span>
+                  <p>No users found</p>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+
+  <!-- EDIT MODAL -->
+  @if (showModal) {
+    <div class="modal-overlay" (click)="closeModal()">
+      <div class="modal animate-scale-in" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h2>Edit User</h2>
+          <button class="close-btn" (click)="closeModal()">
+            <span class="material-icons-round">close</span>
+          </button>
+        </div>
+
+        @if (error) {
+          <div class="modal-error animate-fade-in">
+            <span class="material-icons-round">error_outline</span>
+            {{ error }}
+          </div>
+        }
+
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Name</label>
+            <input type="text" [(ngModel)]="editData.name" />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" [(ngModel)]="editData.email" />
+          </div>
+          <div class="form-group">
+            <label>Role</label>
+            <select [(ngModel)]="editData.role">
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-cancel" (click)="closeModal()">Cancel</button>
+          <button class="btn btn-primary" (click)="saveUser()" [disabled]="saving">
+            @if (saving) {
+              <div class="spinner spinner-sm"></div>
+              Saving...
+            } @else {
+              Update User
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>
