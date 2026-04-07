@@ -1,0 +1,50 @@
+<div class="container my-5">
+  <h2 class="mb-4 background text-center rounded py-2 fw-bold">
+    Our Teachers
+  </h2>
+</div>
+
+<div class="container">
+
+  <div class="row">
+
+    <div
+      class="col-md-4 mb-4"
+      *ngFor="let teacher of teachers"
+    >
+
+      <div class="card h-100 shadow">
+
+        <img
+          [src]="teacher.image"
+          class="card-img-top"
+          alt="Teacher"
+        />
+
+        <div class="card-body">
+
+          <h5 class="card-title">
+            <strong>Name:</strong> {{teacher.name}}
+          </h5>
+
+          <p class="card-text">
+            <strong>Subject:</strong> {{teacher.subject}}
+          </p>
+
+          <p class="card-text">
+            <strong>Designation:</strong> {{teacher.designation}}
+          </p>
+
+          <p class="card-text">
+            <strong>Bio:</strong> {{teacher.bio}}
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

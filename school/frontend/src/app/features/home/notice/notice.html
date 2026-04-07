@@ -1,0 +1,18 @@
+<div class="background py-1">
+  <div class="row">
+    <div class="col-sm-2 bg-danger text-white text-end">
+      Notices :-
+    </div>
+
+    <div class="col-sm-10">
+      <marquee
+        behavior="scroll"
+        direction="left"
+        scrollamount="12"
+        class="notice"
+      >
+       <a style="text-decoration: none; color:inherit;"  [routerLink]="'/notices'">{{ notices }}</a>
+      </marquee>
+    </div>
+  </div>
+</div>

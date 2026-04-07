@@ -1,0 +1,109 @@
+<div class="card shadow p-3">
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h5 class="mb-0">📅 Events</h5>
+
+  <button class="btn btn-primary"
+  data-bs-toggle="modal"
+  data-bs-target="#eventModal"
+  (click)="resetForm()">
+    + Add Event
+  </button>
+</div>
+
+<!-- LOADER -->
+<div *ngIf="isLoading" class="text-center my-3">
+  Loading...
+</div>
+
+<table class="table table-hover" *ngIf="!isLoading">
+
+<thead class="table-dark">
+<tr>
+<th>Title</th>
+<th>Date</th>
+<th>Time</th>
+<th>Location</th>
+<th class="text-end">Actions</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr *ngFor="let e of events">
+<td>{{e.title}}</td>
+<td>{{e.date | date:'mediumDate'}}</td>
+<td>{{e.time}}</td>
+<td>{{e.location}}</td>
+
+<td class="text-end">
+<button class="btn btn-warning btn-sm me-2"
+(click)="editEvent(e)"
+data-bs-toggle="modal"
+data-bs-target="#eventModal">
+Edit
+</button>
+
+<button class="btn btn-danger btn-sm"
+(click)="deleteEvent(e._id)">
+Delete
+</button>
+</td>
+</tr>
+
+<tr *ngIf="events.length==0">
+<td colspan="5" class="text-center text-muted">No Events Found</td>
+</tr>
+
+</tbody>
+</table>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal fade" id="eventModal">
+<div class="modal-dialog">
+<div class="modal-content">
+
+<div class="modal-header">
+<h5>{{isEdit ? 'Edit':'Add'}} Event</h5>
+<button class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+
+<div class="modal-body">
+
+<input class="form-control mb-2"
+placeholder="Title"
+[(ngModel)]="eventData.title"
+required>
+
+<input class="form-control mb-2"
+type="date"
+[(ngModel)]="eventData.date"
+required>
+
+<input class="form-control mb-2"
+type="time"
+[(ngModel)]="eventData.time">
+
+<input class="form-control mb-2"
+placeholder="Location"
+[(ngModel)]="eventData.location">
+
+<textarea class="form-control"
+placeholder="Description"
+[(ngModel)]="eventData.description"></textarea>
+
+</div>
+
+<div class="modal-footer">
+<button class="btn btn-primary"
+(click)="saveEvent()"
+data-bs-dismiss="modal">
+{{isEdit ? 'Update':'Save'}}
+</button>
+</div>
+
+</div>
+</div>
+</div>

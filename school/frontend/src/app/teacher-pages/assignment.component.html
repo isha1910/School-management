@@ -1,0 +1,9 @@
+<h2>Assignments</h2>
+
+<input type="file" (change)="upload($event)" />
+
+<ul>
+  <li *ngFor="let f of files">
+    {{f.file}}
+  </li>
+</ul>

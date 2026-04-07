@@ -1,0 +1,261 @@
+<section class="container my-4">
+  <form [formGroup]="admissionForm" (ngSubmit)="generatePDF()">
+    <div id="pdfSection" class="border p-4 bg-white">
+
+      <!-- School header -->
+      <div class="text-center mb-3">
+        <h4 class="school-title">Shri Dahyabhai Pitamber Derasari Primary School</h4>
+        <div class="school-sub">Gabheni,Sachin,Surat,Gujarat</div>
+        <h3 class="mt-3">ADMISSION FORM</h3>
+      </div>
+
+      <!-- STUDENT CARD -->
+      <div class="card mb-3">
+        <div class="card-header bg-primary text-white">Student Details</div>
+        <div class="card-body">
+          <div class="row g-3 align-items-center">
+            <div class="col-lg-9">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Full Name <span class="text-danger">*</span></label>
+                  <input class="form-control" formControlName="studentName" />
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
+                  <input type="date" class="form-control" formControlName="dob" (change)="calculateAge()" />
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Gender <span class="text-danger">*</span></label>
+                  <select class="form-select" formControlName="gender">
+                    <option value="">Select</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+
+                <div class="col-md-2">
+                  <label class="form-label">Age</label>
+                  <input class="form-control" formControlName="age" readonly />
+                </div>
+                <div class="col-md-2">
+                  <label class="form-label">Blood Group</label>
+                  <input class="form-control" formControlName="bloodGroup" placeholder="e.g. A+" />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Religion <span class="text-danger">*</span></label>
+                  <input class="form-control" formControlName="religion" />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Caste Category <span class="text-danger">*</span></label>
+                  <input class="form-control" formControlName="caste" />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Nationality <span class="text-danger">*</span></label>
+                  <input class="form-control" formControlName="nationality" />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Mother Tongue <span class="text-danger">*</span></label>
+                  <input class="form-control" formControlName="motherTongue" />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Aadhaar Number <span class="text-danger">*</span></label>
+                  <input class="form-control" formControlName="aadhaar" />
+                </div>
+              </div>
+            </div>
+
+            <!-- photo column -->
+            <div class="col-lg-3 text-center">
+              <label class="form-label">Student Photo <span class="text-danger">*</span></label>
+              <input type="file" class="form-control mb-2" (change)="onPhotoUpload($event)" accept="image/*" />
+              <img *ngIf="photoPreview" [src]="photoPreview" class="img-thumbnail" style="max-width:140px;" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADMISSION DETAILS -->
+      <div class="card mb-3">
+        <div class="card-header bg-primary text-white">Admission Details</div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-3">
+              <label class="form-label">Admission For Class <span class="text-danger">*</span></label>
+              <select class="form-select" formControlName="admissionClass">
+                <option value="">Select</option>
+                <option>Nursery</option>
+                <option>LKG</option>
+                <option>UKG</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Academic Year <span class="text-danger">*</span></label>
+              <input class="form-control" formControlName="academicYear" placeholder="2025-2026" />
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Previous School</label>
+              <input class="form-control" formControlName="prevSchool" />
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Reason for Leaving</label>
+              <input class="form-control" formControlName="reasonLeaving" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PARENT/GUARDIAN DETAILS -->
+      <div class="card mb-3">
+        <div class="card-header bg-primary text-white">Parent / Guardian Details</div>
+        <div class="card-body">
+          <div class="row g-3">
+            <!-- Father -->
+            <div class="col-12">
+              <h6>Father's Information</h6>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Full Name <span class="text-danger">*</span></label>
+              <input class="form-control" formControlName="fatherName" />
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Qualification <span class="text-danger">*</span></label>
+              <input class="form-control" formControlName="fatherQualification" />
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Occupation <span class="text-danger">*</span></label>
+              <input class="form-control" formControlName="fatherOccupation" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Office Address</label>
+              <input class="form-control" formControlName="fatherOffice" />
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Contact Number <span class="text-danger">*</span></label>
+              <input class="form-control" formControlName="fatherContact" />
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Email</label>
+              <input class="form-control" formControlName="fatherEmail" />
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Aadhaar</label>
+              <input class="form-control" formControlName="fatherAadhaar" />
+            </div>
+
+            <!-- Mother -->
+            <div class="col-12 mt-2">
+              <h6>Mother's Information</h6>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Full Name <span class="text-danger">*</span></label>
+              <input class="form-control" formControlName="motherName" />
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Qualification <span class="text-danger">*</span></label>
+              <input class="form-control" formControlName="motherQualification" />
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Occupation <span class="text-danger">*</span></label>
+              <input class="form-control" formControlName="motherOccupation" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Office Address</label>
+              <input class="form-control" formControlName="motherOffice" />
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Contact Number <span class="text-danger">*</span></label>
+              <input class="form-control" formControlName="motherContact" />
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Email</label>
+              <input class="form-control" formControlName="motherEmail" />
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Aadhaar</label>
+              <input class="form-control" formControlName="motherAadhaar" />
+            </div>
+
+            <!-- Guardian -->
+            <div class="col-md-4">
+              <label class="form-label">Guardian Name</label>
+              <input class="form-control" formControlName="guardianName" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Relation</label>
+              <input class="form-control" formControlName="guardianRelation" />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Contact</label>
+              <input class="form-control" formControlName="guardianContact" />
+            </div>
+            <div class="col-12">
+              <label class="form-label">Guardian Address</label>
+              <input class="form-control" formControlName="guardianAddress" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADDRESS -->
+      <div class="card mb-3">
+        <div class="card-header bg-primary text-white">Address Details</div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Present Address <span class="text-danger">*</span></label>
+              <textarea class="form-control" rows="2" formControlName="presentAddress"></textarea>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Permanent Address <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <textarea class="form-control" rows="2" formControlName="permanentAddress"></textarea>
+                <button type="button" class="btn btn-outline-secondary" (click)="copyAddress()">Copy</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DOCUMENTS & DECLARATION -->
+      <div class="card mb-3">
+        <div class="card-header bg-primary text-white">Documents & Declaration</div>
+        <div class="card-body">
+          <div class="row g-2">
+            <div class="col-md-6">
+              <div class="mt-2">
+                <label class="form-label">Date <span class="text-danger">*</span></label>
+                <input type="date" class="form-control" formControlName="declarationDate" />
+              </div>
+              <div class="form-check mt-4">
+                <input class="form-check-input" type="checkbox" formControlName="agree" id="agreeCheck" />
+                <label class="form-check-label" for="agreeCheck">I declare that the information provided is correct. <span class="text-danger">*</span></label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Instructions (kept for PDF as well) -->
+      <div class="card mb-3">
+        <div class="card-body small">
+          <ol>
+            <li>Complete all required fields.</li>
+            <li>Click <strong>Generate PDF</strong> to download printable application.</li>
+          </ol>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Generate -->
+    <div class="text-end mt-3">
+      <button type="button" class="btn btn-primary" (click)="generatePDF()">Generate PDF</button>
+    </div>
+  </form>
+</section>

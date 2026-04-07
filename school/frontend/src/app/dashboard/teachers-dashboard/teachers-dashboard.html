@@ -1,0 +1,88 @@
+<div class="card shadow p-3">
+
+<div class="d-flex justify-content-between mb-3">
+<h5>Teachers</h5>
+
+<button class="btn btn-primary"
+data-bs-toggle="modal"
+data-bs-target="#teacherModal"
+(click)="resetForm()">
++ Add Teacher
+</button>
+</div>
+
+<table class="table table-hover">
+
+<thead class="table-dark">
+<tr>
+<th>Name</th>
+<th>Subject</th>
+<th>Designation</th>
+<th>Profile</th>
+<th class="text-end">Actions</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr *ngFor="let t of teachers">
+<td>{{t.name}}</td>
+<td>{{t.subject}}</td>
+<td>{{t.designation}}</td>
+
+<td>
+<img [src]="t.image" width="50" class="rounded">
+</td>
+
+<td class="text-end">
+<button class="btn btn-warning btn-sm me-2"
+(click)="editTeacher(t)"
+data-bs-toggle="modal"
+data-bs-target="#teacherModal">Edit</button>
+
+<button class="btn btn-danger btn-sm"
+(click)="deleteTeacher(t._id)">Delete</button>
+</td>
+</tr>
+
+<tr *ngIf="teachers.length==0">
+<td colspan="5" class="text-center">No Data</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal fade" id="teacherModal">
+<div class="modal-dialog">
+<div class="modal-content">
+
+<div class="modal-header">
+<h5>{{isEdit ? 'Edit':'Add'}} Teacher</h5>
+<button class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+
+<div class="modal-body">
+
+<input class="form-control mb-2" placeholder="Name" [(ngModel)]="teacherData.name">
+<input class="form-control mb-2" placeholder="Subject" [(ngModel)]="teacherData.subject">
+<input class="form-control mb-2" placeholder="Designation" [(ngModel)]="teacherData.designation">
+<input class="form-control mb-2" placeholder="Image URL" [(ngModel)]="teacherData.image">
+<textarea class="form-control" placeholder="Bio" [(ngModel)]="teacherData.bio"></textarea>
+
+</div>
+
+<div class="modal-footer">
+<button class="btn btn-primary"
+(click)="saveTeacher()"
+data-bs-dismiss="modal">
+{{isEdit ? 'Update':'Save'}}
+</button>
+</div>
+
+</div>
+</div>
+</div>

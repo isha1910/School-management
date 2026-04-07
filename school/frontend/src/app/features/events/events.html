@@ -1,0 +1,114 @@
+<div class="container my-5">
+
+<h2 class="mb-4 text text-center text-decoration-underline fs-1">
+Upcoming Events
+</h2>
+
+<div class="row">
+
+<div class="col-sm-4 mb-4" *ngFor="let event of events">
+
+<div class="card border background h-100">
+
+<div class="card-body d-flex">
+
+<div class="me-3">
+<i class="fa fa-calendar fs-1 background"></i>
+</div>
+
+<div>
+
+<h5 class="card-title mb-1">
+
+{{event.title}} <br>
+
+<span style="font-size:small">
+{{event.date | date:'dd-MMMM-yyyy'}}
+</span>
+
+</h5>
+
+<p class="card-text mb-2">
+{{event.description | slice:0:120}}...
+</p>
+
+<a
+class="btn btn-info btn-sm text-white"
+data-bs-toggle="modal"
+data-bs-target="#eventModal"
+(click)="showEvent(event)"
+>
+Details
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- Modal -->
+
+<div class="modal fade" id="eventModal">
+
+<div class="modal-dialog">
+
+<div class="modal-content">
+
+<div class="modal-header background">
+
+<h4 class="modal-title">
+{{selectedEvent?.title}}
+</h4>
+
+<button
+type="button"
+class="btn-close"
+data-bs-dismiss="modal">
+</button>
+
+</div>
+
+<div class="modal-body">
+
+<p class="text-end text-muted">
+
+<span>Date: {{selectedEvent?.date | date}}</span>
+
+</p>
+
+<p>
+
+<strong>Event Details:</strong>
+
+<br>
+
+{{selectedEvent?.description}}
+
+</p>
+
+</div>
+
+<div class="modal-footer">
+
+<button
+type="button"
+class="btn btn-danger"
+data-bs-dismiss="modal">
+Close
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
