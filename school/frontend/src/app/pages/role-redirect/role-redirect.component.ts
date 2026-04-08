@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   standalone: true,
@@ -7,9 +8,8 @@ import { Router } from '@angular/router';
 })
 export class RoleRedirectComponent {
 
-  constructor(private router: Router) {
-
-    const role = localStorage.getItem('role');
+  constructor(private router: Router, private auth: AuthService) {
+    const role = this.auth.getRole();
 
     if (role === 'admin') {
       this.router.navigate(['/admin/dashboard']);

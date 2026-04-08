@@ -20,6 +20,7 @@ export class AdminLayoutComponent {
     { icon: 'class', label: 'Classes', route: '/admin/classes' },
     { icon: 'menu_book', label: 'Subjects', route: '/admin/subjects' },
     { icon: 'assignment_ind', label: 'Assignments', route: '/admin/assignments' },
+    { icon: 'campaign', label: 'Announcements', route: '/admin/announcements' },
     { icon: 'school', label: 'Teachers', route: '/admin/teachers' },
     { icon: 'people', label: 'Users', route: '/admin/users' },
   ];

@@ -1,0 +1,44 @@
+<div class="page animate-fade-in">
+  <div class="page-header">
+    <h1>Announcements</h1>
+    <p>Latest notices from the school</p>
+  </div>
+
+  @if (error) {
+    <div class="alert alert-error animate-fade-in">
+      <span class="material-icons-round">error_outline</span>
+      <span>{{ error }}</span>
+    </div>
+  }
+
+  @if (loading) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <span>Loading announcements...</span>
+    </div>
+  } @else {
+    @if (!items.length) {
+      <div class="empty-state">
+        <span class="material-icons-round">inbox</span>
+        <p>No announcements yet.</p>
+      </div>
+    } @else {
+      <div class="cards">
+        @for (a of items; track a._id) {
+          <article class="card">
+            <div class="title-row">
+              <h3>{{ a.title }}</h3>
+              @if (a.pinned) {
+                <span class="pill pinned">Pinned</span>
+              }
+              <span class="pill">{{ a.audience || 'all' }}</span>
+            </div>
+            <p class="body">{{ a.body }}</p>
+            <div class="meta">{{ a.createdAt | date:'medium' }}</div>
+          </article>
+        }
+      </div>
+    }
+  }
+</div>
+

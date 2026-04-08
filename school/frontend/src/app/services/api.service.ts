@@ -198,4 +198,21 @@ export class ApiService {
   getStudentsForMyClass(classId: string): Observable<ApiResponse<any[]>> {
     return this.http.get<ApiResponse<any[]>>(`${this.apiUrl}/teacher/me/classes/${classId}/students`);
   }
+
+  // ─── ANNOUNCEMENTS ───
+  getAnnouncements(): Observable<ApiResponse<any[]>> {
+    return this.http.get<ApiResponse<any[]>>(`${this.apiUrl}/announcements`);
+  }
+
+  createAnnouncement(payload: { title: string; body: string; audience?: 'all' | 'students' | 'teachers'; pinned?: boolean }): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.apiUrl}/announcements`, payload);
+  }
+
+  updateAnnouncement(id: string, payload: any): Observable<ApiResponse<any>> {
+    return this.http.put<ApiResponse<any>>(`${this.apiUrl}/announcements/${id}`, payload);
+  }
+
+  deleteAnnouncement(id: string): Observable<ApiResponse<null>> {
+    return this.http.delete<ApiResponse<null>>(`${this.apiUrl}/announcements/${id}`);
+  }
 }

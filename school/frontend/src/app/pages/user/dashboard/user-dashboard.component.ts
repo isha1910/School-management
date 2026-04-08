@@ -15,9 +15,11 @@ export class UserDashboardComponent implements OnInit {
   teacherCount = 0;
   loading = true;
   userName = '';
+  dashboardPrefix: 'student' | 'teacher' = 'student';
 
   constructor(private api: ApiService, private auth: AuthService) {
     this.userName = auth.getUser()?.name || 'User';
+    this.dashboardPrefix = auth.isTeacher() ? 'teacher' : 'student';
   }
 
   ngOnInit(): void {

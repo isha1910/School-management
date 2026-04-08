@@ -23,6 +23,10 @@ export const routes: Routes = [
         path: 'contact',
         loadComponent: () => import('./pages/contact/contact.component').then(m => m.ContactComponent),
       },
+      {
+        path: 'announcements',
+        loadComponent: () => import('./pages/announcements/announcements.component').then(m => m.AnnouncementsComponent),
+      },
     ],
   },
 
@@ -68,6 +72,10 @@ export const routes: Routes = [
       {
         path: 'assignments',
         loadComponent: () => import('./pages/admin/assignments/admin-assignments.component').then(m => m.AdminAssignmentsComponent),
+      },
+      {
+        path: 'announcements',
+        loadComponent: () => import('./pages/admin/announcements/admin-announcements.component').then(m => m.AdminAnnouncementsComponent),
       },
       {
         path: 'users',

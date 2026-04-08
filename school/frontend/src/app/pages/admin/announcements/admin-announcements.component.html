@@ -1,0 +1,103 @@
+<div class="page animate-fade-in">
+  <div class="page-header">
+    <div>
+      <h1>Announcements</h1>
+      <p>Create and manage school notices</p>
+    </div>
+    <button class="btn btn-primary" (click)="openAdd()">
+      <span class="material-icons-round">add</span> Add Announcement
+    </button>
+  </div>
+
+  @if (successMsg) {
+    <div class="alert alert-success animate-fade-in">
+      <span class="material-icons-round">check_circle</span>
+      <span>{{ successMsg }}</span>
+    </div>
+  }
+
+  @if (error) {
+    <div class="alert alert-error animate-fade-in">
+      <span class="material-icons-round">error_outline</span>
+      <span>{{ error }}</span>
+    </div>
+  }
+
+  @if (loading) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <span>Loading announcements...</span>
+    </div>
+  } @else {
+    <div class="table-card">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Audience</th>
+            <th>Pinned</th>
+            <th>Created</th>
+            <th class="text-end">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (a of items; track a._id) {
+            <tr>
+              <td class="fw">{{ a.title }}</td>
+              <td class="cap">{{ a.audience || 'all' }}</td>
+              <td>{{ a.pinned ? 'Yes' : 'No' }}</td>
+              <td>{{ a.createdAt | date:'medium' }}</td>
+              <td class="text-end">
+                <button class="btn btn-sm" (click)="openEdit(a)">Edit</button>
+                <button class="btn btn-danger btn-sm" (click)="delete(a._id)">Delete</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  @if (showModal) {
+    <div class="modal-backdrop" (click)="close()"></div>
+    <div class="modal">
+      <div class="modal-header">
+        <h3>{{ isEdit ? 'Edit Announcement' : 'Add Announcement' }}</h3>
+        <button class="icon-btn" (click)="close()"><span class="material-icons-round">close</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Title *</label>
+          <input [(ngModel)]="formData.title" name="title" placeholder="Announcement title" />
+        </div>
+        <div class="form-group">
+          <label>Body *</label>
+          <textarea [(ngModel)]="formData.body" name="body" rows="4" placeholder="Write the announcement..."></textarea>
+        </div>
+        <div class="grid">
+          <div class="form-group">
+            <label>Audience</label>
+            <select [(ngModel)]="formData.audience" name="audience">
+              <option value="all">All</option>
+              <option value="students">Students</option>
+              <option value="teachers">Teachers</option>
+            </select>
+          </div>
+          <div class="form-group check">
+            <label>
+              <input type="checkbox" [(ngModel)]="formData.pinned" name="pinned" />
+              Pinned
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" (click)="close()" [disabled]="saving">Cancel</button>
+        <button class="btn btn-primary" (click)="save()" [disabled]="saving">
+          @if (saving) { <span>Saving...</span> } @else { <span>Save</span> }
+        </button>
+      </div>
+    </div>
+  }
+</div>
+
