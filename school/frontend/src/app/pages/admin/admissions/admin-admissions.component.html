@@ -1,0 +1,141 @@
+<div class="page animate-fade-in">
+  <div class="page-header">
+    <h1>Admissions</h1>
+    <p>Review and approve student admission applications</p>
+  </div>
+
+  @if (successMsg) {
+    <div class="alert alert-success animate-fade-in">
+      <span class="material-icons-round">check_circle</span>
+      <span>{{ successMsg }}</span>
+    </div>
+  }
+
+  @if (error) {
+    <div class="alert alert-error animate-fade-in">
+      <span class="material-icons-round">error_outline</span>
+      <span>{{ error }}</span>
+    </div>
+  }
+
+  <div class="toolbar">
+    <div class="tabs">
+      <button class="tab" [class.active]="status==='pending'" (click)="setStatus('pending')">Pending</button>
+      <button class="tab" [class.active]="status==='approved'" (click)="setStatus('approved')">Approved</button>
+      <button class="tab" [class.active]="status==='rejected'" (click)="setStatus('rejected')">Rejected</button>
+    </div>
+    <button class="btn btn-retry" (click)="loadAdmissions()">
+      <span class="material-icons-round">refresh</span>
+      Refresh
+    </button>
+  </div>
+
+  @if (loading) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <span>Loading applications...</span>
+    </div>
+  } @else {
+    @if (!applications.length) {
+      <div class="empty-state">
+        <span class="material-icons-round">inbox</span>
+        <p>No applications found.</p>
+      </div>
+    } @else {
+      <div class="table-card">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Status</th>
+              <th>Created</th>
+              <th class="text-end">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (a of applications; track a._id) {
+              <tr>
+                <td>
+                  <div class="cell-title">{{ a.fullName }}</div>
+                  @if (a.guardianName) {
+                    <div class="cell-sub">Guardian: {{ a.guardianName }}</div>
+                  }
+                </td>
+                <td>{{ a.email }}</td>
+                <td>{{ a.phone }}</td>
+                <td><span class="badge">{{ a.status }}</span></td>
+                <td>{{ a.createdAt | date:'medium' }}</td>
+                <td class="text-end">
+                  @if (a.status === 'pending') {
+                    <button class="btn btn-primary btn-sm" (click)="openApprove(a)">Approve</button>
+                    <button class="btn btn-danger btn-sm" (click)="openReject(a)">Reject</button>
+                  } @else {
+                    <span class="muted">—</span>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  }
+
+  @if (showApproveModal && approveApp) {
+    <div class="modal-backdrop" (click)="closeApprove()"></div>
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Approve Application</h3>
+        <button class="icon-btn" (click)="closeApprove()">
+          <span class="material-icons-round">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p><strong>{{ approveApp.fullName }}</strong> ({{ approveApp.email }})</p>
+        <div class="form-group">
+          <label>Assign Class</label>
+          <select [(ngModel)]="approveClassId" name="approveClassId">
+            <option [ngValue]="null">No class</option>
+            @for (c of classes; track c._id) {
+              <option [value]="c._id">{{ c.name }}</option>
+            }
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" (click)="closeApprove()" [disabled]="saving">Cancel</button>
+        <button class="btn btn-primary" (click)="confirmApprove()" [disabled]="saving">
+          @if (saving) { <span>Saving...</span> } @else { <span>Approve</span> }
+        </button>
+      </div>
+    </div>
+  }
+
+  @if (showRejectModal && rejectApp) {
+    <div class="modal-backdrop" (click)="closeReject()"></div>
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Reject Application</h3>
+        <button class="icon-btn" (click)="closeReject()">
+          <span class="material-icons-round">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p><strong>{{ rejectApp.fullName }}</strong> ({{ rejectApp.email }})</p>
+        <div class="form-group">
+          <label>Notes (optional)</label>
+          <textarea [(ngModel)]="rejectNotes" name="rejectNotes" rows="3" placeholder="Reason for rejection"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" (click)="closeReject()" [disabled]="saving">Cancel</button>
+        <button class="btn btn-danger" (click)="confirmReject()" [disabled]="saving">
+          @if (saving) { <span>Saving...</span> } @else { <span>Reject</span> }
+        </button>
+      </div>
+    </div>
+  }
+</div>
+

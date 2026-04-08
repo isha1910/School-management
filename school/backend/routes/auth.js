@@ -4,11 +4,13 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User.Model");
 const { authenticateJWT } = require("../middleware/auth.middleware");
+const AdmissionApplication = require("../models/AdmissionApplication.Model");
 
 // ─── REGISTER ───
 router.post("/register", async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    // Backward-compatible: treat register as admission apply.
+    const { name, email, password, phone } = req.body;
 
     // Validation
     if (!name || !email || !password) {
@@ -34,29 +36,30 @@ router.post("/register", async (req, res) => {
       });
     }
 
+    const existingPending = await AdmissionApplication.findOne({ email, status: "pending" });
+    if (existingPending) {
+      return res.status(400).json({
+        success: false,
+        message: "An admission application is already pending for this email.",
+      });
+    }
+
     // Hash password
     const salt = await bcrypt.genSalt(12);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create user
-    const user = await User.create({
-      name,
-      email,
-      password: hashedPassword,
-      // Public registration creates students only.
-      role: "student",
-    });
-
     res.status(201).json({
       success: true,
-      message: "Registration successful.",
-      data: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
+      message: "Application submitted. Please wait for admin approval.",
     });
+
+    // Fire-and-forget create admission application (after response)
+    AdmissionApplication.create({
+      fullName: name,
+      email,
+      passwordHash: hashedPassword,
+      phone: phone || "",
+    }).catch((e) => console.error("Admission create from /register failed:", e.message));
   } catch (error) {
     console.error("Register Error:", error.message);
     res.status(500).json({

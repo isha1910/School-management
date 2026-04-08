@@ -16,6 +16,10 @@ export class AdminLayoutComponent {
 
   menuItems = [
     { icon: 'dashboard', label: 'Dashboard', route: '/admin/dashboard' },
+    { icon: 'how_to_reg', label: 'Admissions', route: '/admin/admissions' },
+    { icon: 'class', label: 'Classes', route: '/admin/classes' },
+    { icon: 'menu_book', label: 'Subjects', route: '/admin/subjects' },
+    { icon: 'assignment_ind', label: 'Assignments', route: '/admin/assignments' },
     { icon: 'school', label: 'Teachers', route: '/admin/teachers' },
     { icon: 'people', label: 'Users', route: '/admin/users' },
   ];

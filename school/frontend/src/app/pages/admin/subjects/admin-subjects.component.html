@@ -1,0 +1,83 @@
+<div class="page animate-fade-in">
+  <div class="page-header">
+    <div>
+      <h1>Subjects</h1>
+      <p>Create and manage subjects</p>
+    </div>
+    <button class="btn btn-primary" (click)="openAdd()">
+      <span class="material-icons-round">add</span> Add Subject
+    </button>
+  </div>
+
+  @if (successMsg) {
+    <div class="alert alert-success animate-fade-in">
+      <span class="material-icons-round">check_circle</span>
+      <span>{{ successMsg }}</span>
+    </div>
+  }
+
+  @if (error) {
+    <div class="alert alert-error animate-fade-in">
+      <span class="material-icons-round">error_outline</span>
+      <span>{{ error }}</span>
+    </div>
+  }
+
+  @if (loading) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <span>Loading subjects...</span>
+    </div>
+  } @else {
+    <div class="table-card">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Code</th>
+            <th class="text-end">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (s of subjects; track s._id) {
+            <tr>
+              <td class="fw">{{ s.name }}</td>
+              <td>{{ s.code || '—' }}</td>
+              <td class="text-end">
+                <button class="btn btn-sm" (click)="openEdit(s)">Edit</button>
+                <button class="btn btn-danger btn-sm" (click)="delete(s._id, s.name)">Delete</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  @if (showModal) {
+    <div class="modal-backdrop" (click)="close()"></div>
+    <div class="modal">
+      <div class="modal-header">
+        <h3>{{ isEdit ? 'Edit Subject' : 'Add Subject' }}</h3>
+        <button class="icon-btn" (click)="close()"><span class="material-icons-round">close</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Subject Name *</label>
+          <input [(ngModel)]="formData.name" name="name" placeholder="e.g., Mathematics" />
+        </div>
+        <div class="form-group">
+          <label>Code</label>
+          <input [(ngModel)]="formData.code" name="code" placeholder="e.g., MATH-101" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" (click)="close()" [disabled]="saving">Cancel</button>
+        <button class="btn btn-primary" (click)="save()" [disabled]="saving">
+          @if (saving) { <span>Saving...</span> } @else { <span>Save</span> }
+        </button>
+      </div>
+    </div>
+  }
+</div>
+

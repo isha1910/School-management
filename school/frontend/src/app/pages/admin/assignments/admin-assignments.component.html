@@ -1,0 +1,109 @@
+<div class="page animate-fade-in">
+  <div class="page-header">
+    <h1>Teacher Assignments</h1>
+    <p>Assign teachers to classes and subjects</p>
+  </div>
+
+  @if (successMsg) {
+    <div class="alert alert-success animate-fade-in">
+      <span class="material-icons-round">check_circle</span>
+      <span>{{ successMsg }}</span>
+    </div>
+  }
+
+  @if (error) {
+    <div class="alert alert-error animate-fade-in">
+      <span class="material-icons-round">error_outline</span>
+      <span>{{ error }}</span>
+    </div>
+  }
+
+  <div class="card">
+    <h3>Create / Update Assignment</h3>
+
+    <div class="grid">
+      <div class="form-group">
+        <label>Teacher *</label>
+        <select [(ngModel)]="teacherUserId" name="teacherUserId">
+          <option value="">Select teacher</option>
+          @for (t of teachers; track t._id) {
+            <option [value]="t._id">{{ t.name }} ({{ t.email }})</option>
+          }
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Class *</label>
+        <select [(ngModel)]="classId" name="classId">
+          <option value="">Select class</option>
+          @for (c of classes; track c._id) {
+            <option [value]="c._id">{{ c.name }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Subjects</label>
+      <div class="chips">
+        @for (s of subjects; track s._id) {
+          <label class="chip">
+            <input
+              type="checkbox"
+              [checked]="subjectIds.includes(s._id)"
+              (change)="toggleSubject(s._id, $any($event.target).checked)"
+            />
+            <span>{{ s.name }}</span>
+          </label>
+        }
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" (click)="save()" [disabled]="saving">
+        @if (saving) { <span>Saving...</span> } @else { <span>Save Assignment</span> }
+      </button>
+      <button class="btn btn-retry" (click)="loadAll()">
+        <span class="material-icons-round">refresh</span> Refresh
+      </button>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Teacher</th>
+          <th>Class</th>
+          <th>Subjects</th>
+          <th class="text-end">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (loading) {
+          <tr><td colspan="4">Loading...</td></tr>
+        } @else {
+          @for (a of assignments; track a._id) {
+            <tr>
+              <td class="fw">{{ a.teacherUserId?.name || '—' }}</td>
+              <td>{{ a.classId?.name || '—' }}</td>
+              <td>
+                @if (a.subjectIds?.length) {
+                  @for (s of a.subjectIds; track s._id) {
+                    <span class="subj">{{ s.name }}</span>
+                  }
+                } @else {
+                  <span class="muted">—</span>
+                }
+              </td>
+              <td class="text-end">
+                <button class="btn btn-danger btn-sm" (click)="delete(a._id)">Delete</button>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+

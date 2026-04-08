@@ -1,0 +1,89 @@
+<div class="page animate-fade-in">
+  <div class="page-header">
+    <div>
+      <h1>Classes</h1>
+      <p>Create and manage classes (Grade/Section)</p>
+    </div>
+    <button class="btn btn-primary" (click)="openAdd()">
+      <span class="material-icons-round">add</span> Add Class
+    </button>
+  </div>
+
+  @if (successMsg) {
+    <div class="alert alert-success animate-fade-in">
+      <span class="material-icons-round">check_circle</span>
+      <span>{{ successMsg }}</span>
+    </div>
+  }
+
+  @if (error) {
+    <div class="alert alert-error animate-fade-in">
+      <span class="material-icons-round">error_outline</span>
+      <span>{{ error }}</span>
+    </div>
+  }
+
+  @if (loading) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <span>Loading classes...</span>
+    </div>
+  } @else {
+    <div class="table-card">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Grade</th>
+            <th>Section</th>
+            <th class="text-end">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (c of classes; track c._id) {
+            <tr>
+              <td class="fw">{{ c.name }}</td>
+              <td>{{ c.grade || '—' }}</td>
+              <td>{{ c.section || '—' }}</td>
+              <td class="text-end">
+                <button class="btn btn-sm" (click)="openEdit(c)">Edit</button>
+                <button class="btn btn-danger btn-sm" (click)="delete(c._id, c.name)">Delete</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+  @if (showModal) {
+    <div class="modal-backdrop" (click)="close()"></div>
+    <div class="modal">
+      <div class="modal-header">
+        <h3>{{ isEdit ? 'Edit Class' : 'Add Class' }}</h3>
+        <button class="icon-btn" (click)="close()"><span class="material-icons-round">close</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Class Name *</label>
+          <input [(ngModel)]="formData.name" name="name" placeholder="e.g., Grade 5-A" />
+        </div>
+        <div class="form-group">
+          <label>Grade</label>
+          <input [(ngModel)]="formData.grade" name="grade" placeholder="e.g., 5" />
+        </div>
+        <div class="form-group">
+          <label>Section</label>
+          <input [(ngModel)]="formData.section" name="section" placeholder="e.g., A" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" (click)="close()" [disabled]="saving">Cancel</button>
+        <button class="btn btn-primary" (click)="save()" [disabled]="saving">
+          @if (saving) { <span>Saving...</span> } @else { <span>Save</span> }
+        </button>
+      </div>
+    </div>
+  }
+</div>
+

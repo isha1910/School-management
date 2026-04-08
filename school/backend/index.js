@@ -22,6 +22,12 @@ app.use(express.json());
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/teacher", require("./routes/teacher"));
 app.use("/api/users", require("./routes/user"));
+app.use("/api/admissions", require("./routes/admissions"));
+app.use("/api/classes", require("./routes/classes"));
+app.use("/api/subjects", require("./routes/subjects"));
+app.use("/api/assignments", require("./routes/assignments"));
+app.use("/api/teacher", require("./routes/teacherPortal"));
+app.use("/api/announcements", require("./routes/announcements"));
 
 // ─── HEALTH CHECK ───
 app.get("/", (req, res) => {

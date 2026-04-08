@@ -1,0 +1,51 @@
+<div class="page animate-fade-in">
+  <div class="page-header">
+    <h1>My Classes</h1>
+    <p>Your assigned classes and subjects</p>
+  </div>
+
+  @if (error) {
+    <div class="alert alert-error animate-fade-in">
+      <span class="material-icons-round">error_outline</span>
+      <span>{{ error }}</span>
+    </div>
+  }
+
+  @if (loading) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <span>Loading...</span>
+    </div>
+  } @else {
+    @if (!assignments.length) {
+      <div class="empty-state">
+        <span class="material-icons-round">inbox</span>
+        <p>No assignments yet. Ask admin to assign you to a class.</p>
+      </div>
+    } @else {
+      <div class="cards">
+        @for (a of assignments; track a._id) {
+          <div class="card">
+            <div class="title">{{ a.classId?.name || 'Class' }}</div>
+            <div class="sub">
+              Subjects:
+              @if (a.subjectIds?.length) {
+                @for (s of a.subjectIds; track s._id) {
+                  <span class="chip">{{ s.name }}</span>
+                }
+              } @else {
+                <span class="muted">Not set</span>
+              }
+            </div>
+            <div class="actions">
+              <a class="btn btn-primary btn-sm" [routerLink]="['/teacher/classes', a.classId?._id, 'students']">
+                View Students
+              </a>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>
+

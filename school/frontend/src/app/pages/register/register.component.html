@@ -7,16 +7,16 @@
         <div class="brand-icon">
           <span class="material-icons-round">school</span>
         </div>
-        <h1>Join the Platform</h1>
-        <p>Create your account and start managing your school ecosystem efficiently. Access dashboards, manage resources, and track performance.</p>
+        <h1>Student Admission</h1>
+        <p>Submit your admission application. After admin approval, you can login using your email and password.</p>
         <div class="brand-features">
           <div class="feature">
             <span class="material-icons-round">person_add</span>
-            <span>Quick Registration</span>
+            <span>Easy Application</span>
           </div>
           <div class="feature">
             <span class="material-icons-round">admin_panel_settings</span>
-            <span>Admin & User Roles</span>
+            <span>Admin Approval</span>
           </div>
           <div class="feature">
             <span class="material-icons-round">lock</span>
@@ -29,8 +29,8 @@
     <!-- Right: Form -->
     <div class="auth-form-section">
       <div class="auth-form-wrapper">
-        <h2>Create Account</h2>
-        <p class="subtitle">Fill in the details to get started</p>
+        <h2>Admission Form</h2>
+        <p class="subtitle">Fill in the details and submit for approval</p>
 
         @if (error) {
           <div class="alert alert-error animate-fade-in">
@@ -48,21 +48,21 @@
 
         <form (ngSubmit)="register()" class="auth-form">
           <div class="form-group">
-            <label for="name">Full Name</label>
+            <label for="fullName">Full Name *</label>
             <div class="input-wrapper">
               <span class="material-icons-round input-icon">person</span>
               <input
-                id="name"
+                id="fullName"
                 type="text"
-                [(ngModel)]="name"
-                name="name"
+                [(ngModel)]="fullName"
+                name="fullName"
                 placeholder="Enter your full name"
               />
             </div>
           </div>
 
           <div class="form-group">
-            <label for="reg-email">Email Address</label>
+            <label for="reg-email">Email Address *</label>
             <div class="input-wrapper">
               <span class="material-icons-round input-icon">mail</span>
               <input
@@ -76,7 +76,21 @@
           </div>
 
           <div class="form-group">
-            <label for="reg-password">Password</label>
+            <label for="phone">Phone *</label>
+            <div class="input-wrapper">
+              <span class="material-icons-round input-icon">call</span>
+              <input
+                id="phone"
+                type="tel"
+                [(ngModel)]="phone"
+                name="phone"
+                placeholder="Enter your phone number"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="reg-password">Password *</label>
             <div class="input-wrapper">
               <span class="material-icons-round input-icon">lock</span>
               <input
@@ -89,12 +103,65 @@
             </div>
           </div>
 
+          <div class="form-group">
+            <label for="applyClass">Applying For Class</label>
+            <div class="input-wrapper">
+              <span class="material-icons-round input-icon">class</span>
+              <select id="applyClass" [(ngModel)]="applyingForClassId" name="applyingForClassId">
+                <option [ngValue]="null">Select a class (optional)</option>
+                @for (c of classes; track c._id) {
+                  <option [value]="c._id">{{ c.name }}</option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="dob">Date of Birth</label>
+            <div class="input-wrapper">
+              <span class="material-icons-round input-icon">event</span>
+              <input id="dob" type="date" [(ngModel)]="dob" name="dob" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="address">Address</label>
+            <div class="input-wrapper">
+              <span class="material-icons-round input-icon">home</span>
+              <input id="address" type="text" [(ngModel)]="address" name="address" placeholder="Street, City, State" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="guardianName">Guardian Name</label>
+            <div class="input-wrapper">
+              <span class="material-icons-round input-icon">supervisor_account</span>
+              <input id="guardianName" type="text" [(ngModel)]="guardianName" name="guardianName" placeholder="Parent/Guardian name" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="guardianPhone">Guardian Phone</label>
+            <div class="input-wrapper">
+              <span class="material-icons-round input-icon">phone_in_talk</span>
+              <input id="guardianPhone" type="tel" [(ngModel)]="guardianPhone" name="guardianPhone" placeholder="Parent/Guardian phone" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="previousSchool">Previous School</label>
+            <div class="input-wrapper">
+              <span class="material-icons-round input-icon">history_edu</span>
+              <input id="previousSchool" type="text" [(ngModel)]="previousSchool" name="previousSchool" placeholder="Previous school (optional)" />
+            </div>
+          </div>
+
           <button type="submit" class="btn btn-primary btn-full" [disabled]="loading">
             @if (loading) {
               <div class="spinner spinner-sm"></div>
-              <span>Creating account...</span>
+              <span>Submitting application...</span>
             } @else {
-              <span>Create Account</span>
+              <span>Submit Application</span>
               <span class="material-icons-round">arrow_forward</span>
             }
           </button>

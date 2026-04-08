@@ -54,6 +54,22 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/admin/teachers/admin-teachers.component').then(m => m.AdminTeachersComponent),
       },
       {
+        path: 'admissions',
+        loadComponent: () => import('./pages/admin/admissions/admin-admissions.component').then(m => m.AdminAdmissionsComponent),
+      },
+      {
+        path: 'classes',
+        loadComponent: () => import('./pages/admin/classes/admin-classes.component').then(m => m.AdminClassesComponent),
+      },
+      {
+        path: 'subjects',
+        loadComponent: () => import('./pages/admin/subjects/admin-subjects.component').then(m => m.AdminSubjectsComponent),
+      },
+      {
+        path: 'assignments',
+        loadComponent: () => import('./pages/admin/assignments/admin-assignments.component').then(m => m.AdminAssignmentsComponent),
+      },
+      {
         path: 'users',
         loadComponent: () => import('./pages/admin/users/admin-users.component').then(m => m.AdminUsersComponent),
       },
@@ -74,6 +90,14 @@ export const routes: Routes = [
       {
         path: 'teachers',
         loadComponent: () => import('./pages/user/teachers/user-teachers.component').then(m => m.UserTeachersComponent),
+      },
+      {
+        path: 'my-classes',
+        loadComponent: () => import('./pages/teacher/my-classes/teacher-my-classes.component').then(m => m.TeacherMyClassesComponent),
+      },
+      {
+        path: 'classes/:classId/students',
+        loadComponent: () => import('./pages/teacher/class-students/teacher-class-students.component').then(m => m.TeacherClassStudentsComponent),
       },
     ],
   },
