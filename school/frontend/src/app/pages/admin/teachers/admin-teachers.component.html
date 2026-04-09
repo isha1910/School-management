@@ -74,6 +74,9 @@
                     <button class="icon-btn edit" (click)="openEditModal(teacher)" title="Edit">
                       <span class="material-icons-round">edit</span>
                     </button>
+                    <button class="icon-btn edit" (click)="openResetPasswordModal(teacher)" title="Reset Password">
+                      <span class="material-icons-round">lock_reset</span>
+                    </button>
                     <button class="icon-btn delete" (click)="deleteTeacher(teacher._id, teacher.name)" title="Delete">
                       <span class="material-icons-round">delete</span>
                     </button>
@@ -139,6 +142,19 @@
             <label>Phone</label>
             <input type="tel" [(ngModel)]="formData.phone" placeholder="Enter phone" />
           </div>
+
+          @if (!isEdit) {
+            <div class="form-row">
+              <div class="form-group">
+                <label>Password</label>
+                <input type="password" [(ngModel)]="formData.password" placeholder="Set teacher password" />
+              </div>
+              <div class="form-group">
+                <label>Confirm Password</label>
+                <input type="password" [(ngModel)]="formData.confirmPassword" placeholder="Confirm password" />
+              </div>
+            </div>
+          }
         </div>
 
         <div class="modal-footer">
@@ -149,6 +165,53 @@
               Saving...
             } @else {
               {{ isEdit ? 'Update' : 'Add' }} Teacher
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- RESET PASSWORD MODAL -->
+  @if (showResetModal) {
+    <div class="modal-overlay" (click)="closeResetModal()">
+      <div class="modal animate-scale-in" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h2>Reset Password</h2>
+          <button class="close-btn" (click)="closeResetModal()">
+            <span class="material-icons-round">close</span>
+          </button>
+        </div>
+
+        @if (error) {
+          <div class="modal-error animate-fade-in">
+            <span class="material-icons-round">error_outline</span>
+            {{ error }}
+          </div>
+        }
+
+        <div class="modal-body">
+          <p class="muted">Set a new password for <strong>{{ resetTeacherName }}</strong>.</p>
+          <div class="form-row">
+            <div class="form-group">
+              <label>New Password</label>
+              <input type="password" [(ngModel)]="formData.password" placeholder="New password" />
+            </div>
+            <div class="form-group">
+              <label>Confirm Password</label>
+              <input type="password" [(ngModel)]="formData.confirmPassword" placeholder="Confirm new password" />
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-cancel" (click)="closeResetModal()">Cancel</button>
+          <button class="btn btn-primary" (click)="resetPassword()" [disabled]="resetting">
+            @if (resetting) {
+              <div class="spinner spinner-sm"></div>
+              Resetting...
+            } @else {
+              Reset Password
             }
           </button>
         </div>

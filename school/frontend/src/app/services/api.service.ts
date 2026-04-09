@@ -111,6 +111,10 @@ export class ApiService {
     return this.http.delete<ApiResponse<null>>(`${this.apiUrl}/teacher/${id}`);
   }
 
+  resetTeacherPassword(id: string, password: string): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.apiUrl}/teacher/${id}/reset-password`, { password });
+  }
+
   // ─── USERS (ADMIN) ───
 
   getUsers(): Observable<ApiResponse<any[]>> {

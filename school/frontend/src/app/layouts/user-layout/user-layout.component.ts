@@ -14,10 +14,20 @@ export class UserLayoutComponent {
   showProfileMenu = false;
   sidebarCollapsed = false;
 
-  menuItems = [
-    { icon: 'dashboard', label: 'Dashboard', route: '/user/dashboard' },
-    { icon: 'school', label: 'Teachers', route: '/user/teachers' },
-  ];
+  get menuItems(): Array<{ icon: string; label: string; route: string }> {
+    if (this.auth.isTeacher()) {
+      return [
+        { icon: 'dashboard', label: 'Dashboard', route: '/teacher/dashboard' },
+        { icon: 'groups', label: 'My Classes', route: '/teacher/my-classes' },
+      ];
+    }
+
+    // Student/legacy user
+    return [
+      { icon: 'dashboard', label: 'Dashboard', route: '/student/dashboard' },
+      { icon: 'school', label: 'Teachers', route: '/student/teachers' },
+    ];
+  }
 
   constructor(public auth: AuthService) {}
 

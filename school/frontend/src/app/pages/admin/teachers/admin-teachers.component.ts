@@ -14,12 +14,16 @@ export class AdminTeachersComponent implements OnInit {
   teachers: Teacher[] = [];
   loading = true;
   saving = false;
+  resetting = false;
   error = '';
   successMsg = '';
 
   // Modal state
   showModal = false;
   isEdit = false;
+  showResetModal = false;
+  resetTeacherId = '';
+  resetTeacherName = '';
   formData = {
     _id: '',
     name: '',
@@ -27,6 +31,8 @@ export class AdminTeachersComponent implements OnInit {
     experience: 0,
     email: '',
     phone: '',
+    password: '',
+    confirmPassword: '',
   };
 
   // Search
@@ -65,14 +71,14 @@ export class AdminTeachersComponent implements OnInit {
 
   openAddModal(): void {
     this.isEdit = false;
-    this.formData = { _id: '', name: '', subject: '', experience: 0, email: '', phone: '' };
+    this.formData = { _id: '', name: '', subject: '', experience: 0, email: '', phone: '', password: '', confirmPassword: '' };
     this.showModal = true;
     this.error = '';
   }
 
   openEditModal(teacher: Teacher): void {
     this.isEdit = true;
-    this.formData = { ...teacher };
+    this.formData = { ...(teacher as any), password: '', confirmPassword: '' };
     this.showModal = true;
     this.error = '';
   }
@@ -81,17 +87,48 @@ export class AdminTeachersComponent implements OnInit {
     this.showModal = false;
   }
 
+  openResetPasswordModal(teacher: Teacher): void {
+    this.resetTeacherId = teacher._id;
+    this.resetTeacherName = teacher.name;
+    this.formData.password = '';
+    this.formData.confirmPassword = '';
+    this.showResetModal = true;
+    this.error = '';
+  }
+
+  closeResetModal(): void {
+    this.showResetModal = false;
+    this.resetTeacherId = '';
+    this.resetTeacherName = '';
+  }
+
   saveTeacher(): void {
-    const { name, subject, experience, email, phone } = this.formData;
+    const { name, subject, experience, email, phone, password, confirmPassword } = this.formData;
     if (!name || !subject || !email || !phone) {
       this.error = 'All fields are required.';
       return;
     }
 
+    if (!this.isEdit) {
+      if (!password || !confirmPassword) {
+        this.error = 'Password and confirm password are required.';
+        return;
+      }
+      if (password.length < 6) {
+        this.error = 'Password must be at least 6 characters.';
+        return;
+      }
+      if (password !== confirmPassword) {
+        this.error = 'Passwords do not match.';
+        return;
+      }
+    }
+
     this.saving = true;
     this.error = '';
 
-    const data = { name, subject, experience, email, phone };
+    const data: any = { name, subject, experience, email, phone };
+    if (!this.isEdit) data.password = password;
 
     const request$ = this.isEdit
       ? this.api.updateTeacher(this.formData._id, data)
@@ -108,6 +145,38 @@ export class AdminTeachersComponent implements OnInit {
       error: (err) => {
         this.saving = false;
         this.error = err.error?.message || 'Operation failed.';
+      },
+    });
+  }
+
+  resetPassword(): void {
+    const { password, confirmPassword } = this.formData;
+    if (!this.resetTeacherId) return;
+    if (!password || !confirmPassword) {
+      this.error = 'Password and confirm password are required.';
+      return;
+    }
+    if (password.length < 6) {
+      this.error = 'Password must be at least 6 characters.';
+      return;
+    }
+    if (password !== confirmPassword) {
+      this.error = 'Passwords do not match.';
+      return;
+    }
+
+    this.resetting = true;
+    this.error = '';
+    this.api.resetTeacherPassword(this.resetTeacherId, password).subscribe({
+      next: (res) => {
+        this.resetting = false;
+        this.showResetModal = false;
+        this.successMsg = res.message || 'Password reset!';
+        setTimeout(() => (this.successMsg = ''), 3000);
+      },
+      error: (err) => {
+        this.resetting = false;
+        this.error = err.error?.message || 'Password reset failed.';
       },
     });
   }

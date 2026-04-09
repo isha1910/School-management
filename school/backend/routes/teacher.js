@@ -6,6 +6,7 @@ const {
   getTeacher,
   updateTeacher,
   deleteTeacher,
+  resetTeacherPassword,
 } = require("../controllers/teacher");
 const { authenticateJWT, adminOnly } = require("../middleware/auth.middleware");
 
@@ -17,5 +18,6 @@ router.get("/:id", getTeacher);
 router.post("/", authenticateJWT, adminOnly, createTeacher);
 router.put("/:id", authenticateJWT, adminOnly, updateTeacher);
 router.delete("/:id", authenticateJWT, adminOnly, deleteTeacher);
+router.post("/:id/reset-password", authenticateJWT, adminOnly, resetTeacherPassword);
 
 module.exports = router;

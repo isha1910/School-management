@@ -44,13 +44,13 @@
         <button class="toggle-btn" (click)="toggleSidebar()">
           <span class="material-icons-round">{{ sidebarCollapsed ? 'menu' : 'menu_open' }}</span>
         </button>
-        <h3 class="page-title">User Panel</h3>
+        <h3 class="page-title">{{ auth.isTeacher() ? 'Teacher Panel' : 'Student Panel' }}</h3>
       </div>
 
       <div class="topbar-right">
         <div class="user-badge">
           <span class="material-icons-round">person</span>
-          <span>User</span>
+          <span>{{ auth.isTeacher() ? 'Teacher' : 'Student' }}</span>
         </div>
 
         <div class="profile-section" (click)="toggleProfile()">

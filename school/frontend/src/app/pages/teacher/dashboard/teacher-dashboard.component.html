@@ -1,0 +1,56 @@
+<div class="dashboard-page animate-fade-in">
+  <div class="welcome-card">
+    <div class="welcome-content">
+      <h1>Welcome, {{ userName }}</h1>
+      <p>Manage your classes and students from your teacher dashboard.</p>
+    </div>
+    <div class="welcome-art">
+      <span class="material-icons-round">co_present</span>
+    </div>
+  </div>
+
+  @if (error) {
+    <div class="alert alert-error animate-fade-in">
+      <span class="material-icons-round">error_outline</span>
+      <span>{{ error }}</span>
+    </div>
+  }
+
+  @if (loading) {
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="skeleton" style="width: 48px; height: 48px; border-radius: 12px;"></div>
+        <div>
+          <div class="skeleton" style="width: 120px; height: 14px; margin-bottom: 8px;"></div>
+          <div class="skeleton" style="width: 60px; height: 28px;"></div>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon teal">
+          <span class="material-icons-round">assignment_ind</span>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label">My Class Assignments</span>
+          <span class="stat-value">{{ assignmentCount }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Quick Actions</h2>
+      <div class="actions-grid">
+        <a routerLink="/teacher/my-classes" class="action-card">
+          <div class="action-icon teal">
+            <span class="material-icons-round">groups</span>
+          </div>
+          <h3>My Classes</h3>
+          <p>View assigned classes and students</p>
+        </a>
+      </div>
+    </div>
+  }
+</div>
+
